@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:telerik="http://schemas.telerik.com/2022/xaml/maui"
+             xmlns:views="clr-namespace:BitcoinMessageVerify.Views"
+             xmlns:vm="clr-namespace:BitcoinMessageVerify.ViewModels"
+             x:Class="BitcoinMessageVerify.Views.TxInfoView"
+             x:DataType="vm:TxInfoViewModel">
+
+    <telerik:RadTabView>
+        <telerik:TabViewItem HeaderText="Overview">
+            <Grid RowDefinitions="Auto, *" Style="{StaticResource TabViewItemGridLayouStyle}">
+                <telerik:RadBorder Style="{StaticResource ListViewBorderWrapStyle}" Padding="10,10,10,20" BorderThickness="1" BorderColor="{StaticResource BorderColor}">
+                    <Grid>
+                        <VerticalStackLayout Spacing="5">
+                            <views:CoinHeaderView CoinName="{Binding CoinName}" CoinSymbol="{Binding CoinSymbol}"/>
+                            <Label Text="{Binding CoinCurrentPrice, Mode=OneWay, StringFormat='${0:N2}'}" FontSize="18" TextColor="Black" FontAttributes="Bold"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </telerik:RadBorder>
+                <views:TxInfoChartView Grid.Row="1"/>
+            </Grid>
+        </telerik:TabViewItem>
+
+        <telerik:TabViewItem HeaderText="Historical Data">
+            <Grid RowDefinitions="Auto, *" ColumnDefinitions="*" Style="{StaticResource TabViewItemGridLayouStyle}">
+                <views:CoinHeaderView CoinName="{Binding CoinName}" CoinSymbol="{Binding CoinSymbol}"/>
+                <views:TxInfoDataGridView Grid.Row="1"/>
+            </Grid>
+        </telerik:TabViewItem>
+    </telerik:RadTabView>
+
+</ContentView>

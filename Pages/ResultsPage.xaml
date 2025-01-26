@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:telerik="http://schemas.telerik.com/2022/xaml/maui"
+             xmlns:vm="clr-namespace:BitcoinMessageVerify.ViewModels"
+             xmlns:strings="clr-namespace:BitcoinMessageVerify.Resources.Strings"
+             xmlns:local="clr-namespace:BitcoinMessageVerify"
+             xmlns:views="clr-namespace:BitcoinMessageVerify.Views"
+             xmlns:formatters="clr-namespace:BitcoinMessageVerify.Formatters"
+             x:Class="BitcoinMessageVerify.Pages.ResultsPage"
+             x:DataType="vm:ResultsPageViewModel"
+             BackgroundColor="{StaticResource Primary}"
+             Title="Verified Bitcoin Address Results">
+
+    <StackLayout Padding="20">
+        <telerik:RadTabView>
+            <telerik:TabViewItem HeaderText="Overview">
+                <Grid RowDefinitions="Auto, *" Style="{StaticResource TabViewItemGridLayouStyle}">
+                    <telerik:RadBorder Style="{StaticResource ListViewBorderWrapStyle}" Padding="10,10,10,20" BorderThickness="1" BorderColor="{StaticResource BorderColor}">
+                        <Grid RowDefinitions="Auto" ColumnDefinitions="*,*,*">
+                            <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="5">
+                                <views:CoinHeaderView CoinName="{Binding CoinName}" CoinSymbol="{Binding CoinSymbol}"/>
+                                <Label Text="{Binding CoinCurrentPrice, Mode=OneWay, StringFormat='${0:N2}'}" FontSize="18" TextColor="Black" FontAttributes="Bold"/>
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Row="0" Grid.Column="1" Spacing="5" HorizontalOptions="Center">
+                                <Label Text="{Binding QuantityLabel}" FontSize="28" HorizontalOptions="Start"  FontAttributes="Bold" TextColor="{StaticResource DownloadButtonColor}"/>
+                                <Label Text="{Binding Quantity, Mode=OneWay, StringFormat='{0:N8}'}" FontSize="18" TextColor="Black" FontAttributes="Bold"/>
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Row="0" Grid.Column="2" Spacing="5" HorizontalOptions="End">
+                                <Label Text="{Binding AmountLabel}" FontSize="28" HorizontalOptions="Start"  FontAttributes="Bold" TextColor="{StaticResource DownloadButtonColor}"/>
+                                <Label Text="{Binding Amount, Mode=OneWay, StringFormat='${0:N2}'}" FontSize="18" TextColor="Black" FontAttributes="Bold"/>
+                            </VerticalStackLayout>
+                        </Grid>
+                    </telerik:RadBorder>
+                    <telerik:RadBorder Grid.Row="1" Style="{StaticResource ListViewBorderWrapStyle}" Padding="10,10,10,20" BorderThickness="1" BorderColor="{StaticResource BorderColor}" >
+                        <telerik:RadCartesianChart x:Name="BalanceChart" Grid.Row="0" HeightRequest="600">
+                            <telerik:RadCartesianChart.HorizontalAxis>
+                                <telerik:CategoricalAxis LabelTextColor="Black" /> 
+                            </telerik:RadCartesianChart.HorizontalAxis>
+                            <telerik:RadCartesianChart.VerticalAxis>
+                                <telerik:NumericalAxis LabelTextColor="Black">
+                                    <telerik:NumericalAxis.LabelFormatter>
+                                        <formatters:ShortPriceFormatter/>
+                                    </telerik:NumericalAxis.LabelFormatter>
+                                </telerik:NumericalAxis>
+                            </telerik:RadCartesianChart.VerticalAxis>
+                            <telerik:RadCartesianChart.Series>
+                                <telerik:LineSeries Stroke="Green" StrokeThickness="2.5" CategoryBinding="TransId" ValueBinding="Balance" ItemsSource="{Binding TxData}">
+                                </telerik:LineSeries>
+                            </telerik:RadCartesianChart.Series>
+                        </telerik:RadCartesianChart>
+                    </telerik:RadBorder>
+                </Grid>
+            </telerik:TabViewItem>
+
+            <telerik:TabViewItem HeaderText="Historical Data">
+                <Grid RowDefinitions="Auto, *" ColumnDefinitions="*" Style="{StaticResource TabViewItemGridLayouStyle}" Padding="20">
+                    <views:CoinHeaderView CoinName="{Binding CoinName}" CoinSymbol="{Binding CoinSymbol}"/>
+                    <telerik:RadDataGrid Grid.Row="1" HeightRequest="600" UserGroupMode="Disabled"  AutoGenerateColumns="False" UserEditMode="None" ItemsSource="{Binding TxData}" GridLinesThickness="1" GridLinesVisibility="Horizontal" GridLinesColor="{StaticResource DataGridLineColor}">
+                        <telerik:RadDataGrid.Columns>
+                            <telerik:DataGridNumericalColumn CellContentFormat="{}{0:N0}" PropertyName="TransId" HeaderText="Trans #">
+                                 <telerik:DataGridNumericalColumn.HeaderStyle>
+                                    <Style TargetType="telerik:DataGridColumnHeaderAppearance">
+                                        <Setter Property="TextHorizontalOptions" Value="Center" />
+                                    </Style>
+                                </telerik:DataGridNumericalColumn.HeaderStyle>
+                                 <telerik:DataGridNumericalColumn.CellContentStyle>
+                                    <Style TargetType="telerik:DataGridTextCellAppearance">
+                                        <Setter Property="FontFamily" Value="Consola" />
+                                        <Setter Property="HorizontalTextAlignment" Value="End" />
+                                    </Style>
+                                </telerik:DataGridNumericalColumn.CellContentStyle>
+                            </telerik:DataGridNumericalColumn>
+                            <telerik:DataGridDateColumn CellContentFormat="{}{0:g}" PropertyName="Date" HeaderText="Date">
+                                 <telerik:DataGridDateColumn.HeaderStyle>
+                                    <Style TargetType="telerik:DataGridColumnHeaderAppearance">
+                                        <Setter Property="TextHorizontalOptions" Value="Center" />
+                                    </Style>
+                                </telerik:DataGridDateColumn.HeaderStyle>
+                                 <telerik:DataGridDateColumn.CellContentStyle>
+                                    <Style TargetType="telerik:DataGridTextCellAppearance">
+                                        <Setter Property="FontFamily" Value="Consola" />
+                                        <Setter Property="HorizontalTextAlignment" Value="End" />
+                                    </Style>
+                                </telerik:DataGridDateColumn.CellContentStyle>
+                            </telerik:DataGridDateColumn>
+                            <telerik:DataGridNumericalColumn CellContentFormat="{}{0:N8} BTC" PropertyName="Amount" HeaderText="Amount">
+                                 <telerik:DataGridNumericalColumn.HeaderStyle>
+                                    <Style TargetType="telerik:DataGridColumnHeaderAppearance">
+                                        <Setter Property="TextHorizontalOptions" Value="Center" />
+                                    </Style>
+                                </telerik:DataGridNumericalColumn.HeaderStyle>
+                                 <telerik:DataGridNumericalColumn.CellContentStyle>
+                                    <Style TargetType="telerik:DataGridTextCellAppearance">
+                                        <Setter Property="FontFamily" Value="Consola" />
+                                        <Setter Property="HorizontalTextAlignment" Value="End" />
+                                    </Style>
+                                </telerik:DataGridNumericalColumn.CellContentStyle>
+                            </telerik:DataGridNumericalColumn>
+                            <telerik:DataGridNumericalColumn CellContentFormat="{}{0:N8} BTC" PropertyName="Balance" HeaderText="Balance">
+                                 <telerik:DataGridNumericalColumn.HeaderStyle>
+                                    <Style TargetType="telerik:DataGridColumnHeaderAppearance">
+                                        <Setter Property="TextHorizontalOptions" Value="Center" />
+                                    </Style>
+                                </telerik:DataGridNumericalColumn.HeaderStyle>
+                                 <telerik:DataGridNumericalColumn.CellContentStyle>
+                                    <Style TargetType="telerik:DataGridTextCellAppearance">
+                                        <Setter Property="FontFamily" Value="Consola" />
+                                        <Setter Property="HorizontalTextAlignment" Value="End" />
+                                    </Style>
+                                </telerik:DataGridNumericalColumn.CellContentStyle>
+                            </telerik:DataGridNumericalColumn>
+                        </telerik:RadDataGrid.Columns>
+                    </telerik:RadDataGrid>
+                </Grid>
+            </telerik:TabViewItem>
+        </telerik:RadTabView>
+    </StackLayout>
+</ContentPage>

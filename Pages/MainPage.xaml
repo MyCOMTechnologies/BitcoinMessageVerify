@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:telerik="http://schemas.telerik.com/2022/xaml/maui"
+             xmlns:vm="clr-namespace:BitcoinMessageVerify.ViewModels"
+             xmlns:strings="clr-namespace:BitcoinMessageVerify.Resources.Strings"
+             xmlns:local="clr-namespace:BitcoinMessageVerify"
+             xmlns:views="clr-namespace:BitcoinMessageVerify.Views"
+             x:Class="BitcoinMessageVerify.Pages.MainPage"
+             x:DataType="vm:MainPageViewModel"
+             BackgroundColor="{StaticResource Primary}"
+             Title="{x:Static strings:AppResources.ProofOfOwnership}">
+
+    <StackLayout Padding="20">
+        <Grid x:Name="MainPageLayout" RowDefinitions="Auto" ColumnDefinitions="*">
+            <Grid Grid.Row="0" Grid.Column="0" Padding="20" RowSpacing="10" ColumnSpacing="15" RowDefinitions="Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*,Auto" BackgroundColor="{StaticResource White}">
+
+                <Label Text="{Binding ErrorMessage}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" TextColor="Red" />
+
+                <Label Text="{x:Static strings:AppResources.BitcoinAddress}" VerticalOptions="Center" Grid.Row="1" Grid.Column="0" />
+                <telerik:RadEntry Text="{Binding BitcoinAddress}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
+
+                <Label Text="{x:Static strings:AppResources.Message}" VerticalOptions="Center" Grid.Row="2" Grid.Column="0" />
+                <telerik:RadEntry Text="{Binding Message}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" />
+
+                <Label Text="{x:Static strings:AppResources.SignedMessage}" VerticalOptions="Center" Grid.Row="3" Grid.Column="0" />
+                <telerik:DataFormMultiLineEditor PropertyName="SignedMessage" Grid.Row="3" Grid.Column="1" BorderThickness="1" BorderColor="LightGray" CornerRadius="5" />
+
+                <telerik:RadBusyIndicator Grid.Row="4" Grid.Column="1" HorizontalOptions="Center" x:Name="busyIndicator" IsBusy="{Binding IsBusy}" AnimationContentHeightRequest="50" AnimationContentWidthRequest="50">
+                    <telerik:RadBusyIndicator.Content>
+                        <StackLayout>
+                            <telerik:RadButton x:Name="VerifyMsg" Text="{x:Static strings:AppResources.VerifyMessage}" />
+                        </StackLayout>
+                    </telerik:RadBusyIndicator.Content>
+                </telerik:RadBusyIndicator>
+
+            </Grid>        
+        </Grid>
+    </StackLayout>
+
+</ContentPage>
